@@ -174,7 +174,7 @@ void runTestsMonkey() {
 		thread* getters[numThreads];
 		for(int experiment = 0; experiment < NUM_EXP; experiment++)
 		{
-			mhm = new MonkeyHashMap<string,int>(ITER, 0.5);
+			mhm = new MonkeyHashMap<string,int>(ITER, DEFAULT_LOAD_FACTOR);
 			milliseconds start = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
 			putterThread = new thread(putterMonkey, mhm, 0);
 			for(int i = 0; i < numThreads; i++) getters[i] = new thread(getterMonkey, mhm, i+1);
@@ -182,6 +182,7 @@ void runTestsMonkey() {
 			for(int i = 0; i < numThreads; i++) getters[i]->join();
 			milliseconds elapsed = duration_cast<milliseconds>(system_clock::now().time_since_epoch()) - start;
 			totalTime += elapsed;
+			//mhm->print();
 			delete mhm;
 			delete putterThread;
 			for(int i = 0; i < numThreads; i++) delete getters[i];
@@ -213,8 +214,8 @@ int main(int argc, char** argv) {
 
 	generateKeyPool(KEY_POOL_MIN_LENGTH, KEY_SIZE, KEY_POOL_SIZE);
 
-	runTests();
 	runTestsMonkey();
+	runTests();
 
 	return 0;
 }

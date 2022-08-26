@@ -12,7 +12,7 @@
 #define DEBUG(x)
 #endif
 
-#define ARRAY_LENGTH 256
+#define ARRAY_LENGTH 128
 
 extern Node* NULL_NODE;
 

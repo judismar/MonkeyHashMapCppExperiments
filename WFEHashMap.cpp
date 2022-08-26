@@ -1,7 +1,11 @@
 #include "WFEHashMap.hpp"
+#include <iostream>
+using namespace std;
 
 WFEHashMap::WFEHashMap(int _keySize): keySize(_keySize) {
 	head = new ArrayNode(ARRAY_LENGTH);
+	v = new int[keySize];
+	for(int i = 0; i < keySize; i++) v[i] = 0;
 }
 
 bool WFEHashMap::put(std::string key, int value) {
@@ -9,7 +13,6 @@ bool WFEHashMap::put(std::string key, int value) {
 	Node* insertThis = allocateNode(value, key, keySize);
 	DEBUG("Node allocated");
 	Node* local = head;
-
 	for (int R = 0; R < keySize; R++) {
 		DEBUG("Getting pos");
 		int pos = (int) hash[R];
@@ -21,7 +24,6 @@ bool WFEHashMap::put(std::string key, int value) {
 			}
 			Node* node = getNode(local, pos);
 			DEBUG("Got node");
-
 			if (isArrayNode(node)) {
 				DEBUG("is array node");
 				local = node;
@@ -48,7 +50,7 @@ bool WFEHashMap::put(std::string key, int value) {
 						break;
 					} else if (node != nullptr && hashEqual(dynamic_cast<DataNode*>(node)->getHash(), dynamic_cast<DataNode*>(insertThis)->getHash(), keySize)) {
 						DEBUG("Hashes are equal. Deleting insertThis");
-						//delete insertThis;
+						delete insertThis;
 						return true;
 					} else {
 						DEBUG("fail");
@@ -73,7 +75,7 @@ bool WFEHashMap::put(std::string key, int value) {
 							local = expandTable(local, pos, node, R);
 							break;
 						} else {
-							//delete insertThis;
+							delete insertThis;
 							return true;
 						}
 					}
@@ -116,7 +118,7 @@ bool WFEHashMap::remove(std::string key) {
 					DEBUG("Hash equal");
 					if (atomic_compare_exchange_weak(dynamic_cast<ArrayNode*>(local)->array + pos, &node, NULL_NODE)) {
 						DEBUG("CAS Successful. Deleting node");
-						//delete node;
+						delete node;
 						return true;
 					} else {
 						DEBUG("CAS failed.");

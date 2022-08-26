@@ -1,7 +1,7 @@
 CC=g++
-CFLAGS=-Wall -std=c++11 -pthread -g
+CFLAGS=-Wall -std=c++11 -pthread
 TARGET=main
-FILES=main.o utils.o WFEHashMap.o LBEHashMap.o Node.o DataNode.o ArrayNode.o MonkeyHashMapEntry.o MonkeyHashMap.o
+FILES=main.o utils.o WFEHashMap.o LBEHashMap.o Node.o DataNode.o ArrayNode.o MonkeyHashMap.o
 
 %: all
 

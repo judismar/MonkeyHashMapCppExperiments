@@ -15,6 +15,7 @@ class WFEHashMap: public HashMap {
 private:
 	Node* head;
 	const int keySize;
+	int *v;
 
 public:
 	WFEHashMap(int _keySize);
@@ -22,6 +23,8 @@ public:
 	bool put(std::string key, int value);
 	bool remove(std::string key);
 	int* get(std::string key);
+
+	void printArray();
 };
 
 #endif
